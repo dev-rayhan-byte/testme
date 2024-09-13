@@ -1,41 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-       <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>AR Image Viewer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Camera AR Viewer</title>
+    
+    <!-- A-Frame library -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 
-       <!-- Importing A-Frame and MindAR.js libraries -->
-       <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-       <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.1/dist/aframe/dist/aframe-mindar.js"></script>
-
-       <style>
-              body, html {
-                     margin: 0;
-                     padding: 0;
-                     width: 100vw;
-                     height: 100vh;
-                     overflow: hidden;
-              }
-              #ar-container {
-                     width: 100vw;
-                     height: 100vh;
-              }
-       </style>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1; /* Place behind the A-Frame scene */
+        }
+    </style>
 </head>
 <body>
 
-       <!-- MindAR Scene -->
-       <a-scene mindar="autoStart: true;" color-space="sRGB" embedded renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false">
-              <!-- Camera -->
-              <a-camera position="0 0 0"></a-camera>
+    <!-- Video element to display the camera feed -->
+    <video id="cameraFeed" autoplay playsinline></video>
 
-              <!-- Images placed around the user -->
-              <a-image src="img1.png" position="0 0 -5" width="1" height="1"></a-image>
-              <a-image src="img2.png" position="2 0 -5" width="1" height="1"></a-image>
-              <a-image src="img3.png" position="-2 0 -5" width="1" height="1"></a-image>
-              <a-image src="img4.png" position="0 2 -5" width="1" height="1"></a-image>
-       </a-scene>
+    <!-- A-Frame Scene -->
+    <a-scene embedded>
+        <!-- Replace with your AR objects, placed around the camera feed -->
+        <a-camera position="0 0 0"></a-camera>
+        <a-image src="img1.png" position="0 0 -2" width="1" height="1"></a-image>
+        <a-image src="img2.png" position="1 0 -3" width="1" height="1"></a-image>
+        <a-image src="img3.png" position="-1 0 -4" width="1" height="1"></a-image>
+    </a-scene>
 
+    <script>
+        // Access the camera using getUserMedia
+        const video = document.getElementById('cameraFeed');
+        
+        // Request access to the user's camera
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then(stream => {
+                // Set the video source to the camera stream
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing camera: ', error);
+            });
+    </script>
 </body>
 </html>
