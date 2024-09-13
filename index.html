@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Markerless AR</title>
+       <style>
+              body {
+                     margin: 0;
+                     overflow: hidden;
+              }
+              #ar-button {
+                     position: absolute;
+                     bottom: 10px;
+                     left: 50%;
+                     transform: translateX(-50%);
+                     padding: 1em;
+                     font-size: 1.2em;
+                     background: #007BFF;
+                     color: white;
+                     border: none;
+                     border-radius: 5px;
+                     cursor: pointer;
+              }
+       </style>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+       <button id="ar-button">Enter AR</button>
+
+       <script>
+              // Check if WebXR is supported
+              if (navigator.xr && navigator.xr.isSessionSupported) {
+                     const arButton = document.getElementById('ar-button');
+
+                     // WebXR AR support check
+                     navigator.xr.isSessionSupported('immersive-ar').then(supported => {
+                            if (supported) {
+                                   arButton.style.display = 'block';
+                                   arButton.addEventListener('click', startAR);
+                            } else {
+                                   alert('WebXR AR not supported');
+                            }
+                     });
+              }
+
+              let renderer, scene, camera;
+
+              function startAR() {
+                     // Start AR Session
+                     navigator.xr.requestSession('immersive-ar', {
+                            requiredFeatures: ['hit-test']
+                     }).then(onSessionStarted);
+              }
+
+              function onSessionStarted(session) {
+                     session.addEventListener('end', onSessionEnded);
+
+                     // Set up Three.js for AR
+                     renderer = new THREE.WebGLRenderer({ alpha: true });
+                     renderer.setPixelRatio(window.devicePixelRatio);
+                     renderer.setSize(window.innerWidth, window.innerHeight);
+                     renderer.xr.enabled = true;
+                     renderer.xr.setReferenceSpaceType('local');
+                     document.body.appendChild(renderer.domElement);
+
+                     // Create a new scene
+                     scene = new THREE.Scene();
+
+                     // Create a camera for AR
+                     camera = new THREE.PerspectiveCamera();
+                     scene.add(camera);
+
+                     // Add lighting
+                     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+                     light.position.set(0.5, 1, 0.25);
+                     scene.add(light);
+
+                     // Load a basic 3D model (a cube)
+                     const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+                     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+                     const cube = new THREE.Mesh(geometry, material);
+                     cube.visible = false; // Hide cube initially
+                     scene.add(cube);
+
+                     // Handle hit testing
+                     const hitTestSource = session.requestReferenceSpace('viewer').then((refSpace) => {
+                            return session.requestHitTestSource({ space: refSpace });
+                     });
+
+                     const referenceSpace = session.requestReferenceSpace('local-floor');
+
+                     session.requestAnimationFrame((time, frame) => onXRFrame(time, frame, hitTestSource, cube));
+
+                     renderer.setAnimationLoop(() => renderer.render(scene, camera));
+
+                     // Show cube on tap
+                     session.addEventListener('select', () => {
+                            cube.visible = true;
+                     });
+              }
+
+              function onXRFrame(time, frame, hitTestSource, cube) {
+                     // Update cube position based on hit test results
+                     const viewerPose = frame.getViewerPose(referenceSpace);
+
+                     if (viewerPose) {
+                            const hitTestResults = frame.getHitTestResults(hitTestSource);
+
+                            if (hitTestResults.length > 0) {
+                                   const hitPose = hitTestResults[0].getPose(referenceSpace);
+
+                                   // Position cube on detected plane
+                                   cube.position.set(hitPose.transform.position.x, hitPose.transform.position.y, hitPose.transform.position.z);
+                                   cube.visible = true;
+                            }
+                     }
+
+                     renderer.xr.update();
+              }
+
+              function onSessionEnded() {
+                     // Clean up when AR session ends
+                     renderer.setAnimationLoop(null);
+                     document.body.removeChild(renderer.domElement);
+              }
+       </script>
+</body>
+</html>
