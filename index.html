@@ -1,59 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Camera AR Viewer</title>
-    
-    <!-- A-Frame library -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>AR Viewer for Mobile and PC</title>
 
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-        }
-        video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -1; /* Place behind the A-Frame scene */
-        }
-    </style>
+       <!-- A-Frame library -->
+       <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+       <style>
+              body, html {
+                     margin: 0;
+                     padding: 0;
+                     width: 100vw;
+                     height: 100vh;
+                     overflow: hidden;
+              }
+              video {
+                     position: absolute;
+                     top: 0;
+                     left: 0;
+                     width: 100vw;
+                     height: 100vh;
+                     object-fit: cover;
+                     z-index: -1; /* Place behind the A-Frame scene */
+              }
+       </style>
 </head>
 <body>
 
-    <!-- Video element to display the camera feed -->
-    <video id="cameraFeed" autoplay playsinline></video>
+       <!-- Video element to display the camera feed -->
+       <video id="cameraFeed" autoplay playsinline></video>
 
-    <!-- A-Frame Scene -->
-    <a-scene embedded>
-        <!-- Replace with your AR objects, placed around the camera feed -->
-        <a-camera position="0 0 0"></a-camera>
-        <a-image src="img1.png" position="0 0 -2" width="1" height="1"></a-image>
-        <a-image src="img2.png" position="1 0 -3" width="1" height="1"></a-image>
-        <a-image src="img3.png" position="-1 0 -4" width="1" height="1"></a-image>
-    </a-scene>
+       <!-- A-Frame Scene -->
+       <a-scene embedded>
+              <!-- Camera -->
+              <a-camera position="0 0 0"></a-camera>
 
-    <script>
-        // Access the camera using getUserMedia
-        const video = document.getElementById('cameraFeed');
-        
-        // Request access to the user's camera
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-            .then(stream => {
-                // Set the video source to the camera stream
-                video.srcObject = stream;
-            })
-            .catch(error => {
-                console.error('Error accessing camera: ', error);
-            });
-    </script>
+              <!-- Replace with your AR objects, placed around the camera feed -->
+              <a-image src="nasa.jpg" position="0 1 -3" width="2" height="2"></a-image>
+              <a-image src="earthlink.png" position="3 1 -4"  height="2"></a-image>
+              <a-image src="cover.png" position="-4 3 -5"  height="2"></a-image>
+       </a-scene>
+
+       <script>
+              const video = document.getElementById('cameraFeed');
+
+              // Function to access camera depending on device type
+              function startCamera() {
+                     const constraints = {
+                            video: {
+                                   facingMode: { ideal: 'environment' }, // Try rear camera for mobile devices
+                                   width: { ideal: 1280 },
+                                   height: { ideal: 720 }
+                            }
+                     };
+
+                     // Request access to the camera
+                     navigator.mediaDevices.getUserMedia(constraints)
+                            .then(stream => {
+                                   // Set the video source to the camera stream
+                                   video.srcObject = stream;
+                            })
+                            .catch(error => {
+                                   console.error('Error accessing the camera: ', error);
+                                   alert('Unable to access camera: ' + error.message);
+                            });
+              }
+
+              // Start the camera when the page loads
+              window.onload = () => {
+                     startCamera();
+              };
+       </script>
 </body>
 </html>
