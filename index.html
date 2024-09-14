@@ -3,39 +3,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple AR Page</title>
-  <style>
-    body { margin: 0; }
-    #earthlink { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-    #earthlink img { max-width: 100%; height: auto; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Viewing Page</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
-  <a-scene embedded arjs>
-    <a-marker preset="hiro">
-      <a-image src="https://dev-rayhan-byte.github.io/testme/earthlink.png" position="0 0 0" width="2" height="2"></a-image>
-    </a-marker>
-    <a-entity camera></a-entity>
-  </a-scene>
+    <a-scene embedded arjs>
+        <!-- Define the marker for AR -->
+        <a-marker preset="hiro">
+            <!-- Add your image to the marker -->
+            <a-image src="https://dev-rayhan-byte.github.io/testme/earthlink.png" width="2" height="2"></a-image>
+        </a-marker>
 
-  <div id="earthlink">
-    <img src="https://dev-rayhan-byte.github.io/testme/earthlink.png" alt="EarthLink">
-  </div>
-
-  <!-- Include A-Frame and AR.js libraries -->
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.2/aframe/build/aframe-ar.js"></script>
-  <script>
-    document.querySelector('a-marker').addEventListener('markerFound', function() {
-      document.getElementById('earthlink').style.display = 'block';
-    });
-    document.querySelector('a-marker').addEventListener('markerLost', function() {
-      document.getElementById('earthlink').style.display = 'none';
-    });
-  </script>
+        <!-- Add a camera with AR tracking -->
+        <a-entity camera></a-entity>
+    </a-scene>
 </body>
 </html>
+
 
 
