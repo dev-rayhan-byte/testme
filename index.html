@@ -51,11 +51,12 @@
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
                     console.log('Camera access granted');
+                    // Initialize AR scene after permissions are granted
                     document.querySelector('#arScene').setAttribute('arjs', 'sourceType: webcam;');
                 })
                 .catch(error => {
-                    console.error('Camera access denied or error:', error);
-                    document.querySelector('#info').textContent = 'Camera access denied or error. Please check permissions.';
+                    console.error('Camera access error:', error);
+                    document.querySelector('#info').textContent = 'Camera access error. Please ensure permissions are granted and try again.';
                 });
         }
 
