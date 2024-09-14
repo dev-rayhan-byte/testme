@@ -35,8 +35,8 @@
     </style>
 </head>
 <body>
-    <div id="info">Scan the Hiro marker to see the content.</div>
-    <a-scene embedded arjs='sourceType: webcam;'>
+    <div id="info">Scanning for Hiro marker...</div>
+    <a-scene embedded arjs='sourceType: webcam;' id="arScene">
         <!-- Hiro marker detection -->
         <a-marker id="marker" preset="hiro">
             <!-- AR content -->
@@ -52,24 +52,36 @@
         <a-entity camera></a-entity>
     </a-scene>
 
-    <!-- JavaScript for interactivity -->
+    <!-- JavaScript for interactivity and camera permissions -->
     <script>
-        // Wait for A-Frame and AR.js to be loaded
+        function requestCameraPermissions() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    console.log('Camera access granted');
+                    // Initialize AR scene after permissions are granted
+                    document.querySelector('#arScene').setAttribute('arjs', 'sourceType: webcam;');
+                })
+                .catch(error => {
+                    console.error('Camera access denied:', error);
+                    alert('Please allow camera access for AR functionality.');
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', requestCameraPermissions);
+
+        // JavaScript for AR marker interactions
         document.addEventListener('DOMContentLoaded', () => {
-            // Get the marker and image elements
             const marker = document.querySelector('#marker');
             const arImage = document.querySelector('#arImage');
             const info = document.querySelector('#info');
 
-            // Event listener for when the marker is detected
             marker.addEventListener('markerFound', () => {
                 info.textContent = 'Hiro marker detected. AR content displayed.';
                 arImage.setAttribute('visible', 'true');
             });
 
-            // Event listener for when the marker is lost
             marker.addEventListener('markerLost', () => {
-                info.textContent = 'Scan the Hiro marker to see the content.';
+                info.textContent = 'Scanning for Hiro marker...';
                 arImage.setAttribute('visible', 'false');
             });
         });
