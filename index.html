@@ -5,30 +5,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D AR Globe</title>
-  <link rel="https://dev-rayhan-byte.github.io/testme/stylesheet" href="style.css">
-  
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  
-  <!-- A-Frame & AR.js -->
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.min.js"></script>
-
+  <title>Simple AR Page</title>
+  <style>
+    body { margin: 0; }
+    #arjs-container { width: 100%; height: 100vh; }
+    #earthlink { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    #earthlink img { max-width: 100%; height: auto; }
+  </style>
 </head>
 <body>
-  <h1>3D AR Globe with CO2 Emissions</h1>
-
-  <!-- AR Scene for AR.js -->
-  <a-scene embedded arjs>
-    <!-- Marker (Hiro marker for testing) -->
-    <a-marker preset="hiro">
-      <a-entity id="globe" globe></a-entity>
-    </a-marker>
-    <a-entity camera></a-entity>
-  </a-scene>
-
-  <!-- Script for handling 3D globe and video texture -->
-  <script src="https://dev-rayhan-byte.github.io/testme/app.js"></script>
+  <div id="arjs-container">
+    <!-- AR.js scene -->
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <a-image src="https://dev-rayhan-byte.github.io/testme/earthlink.png" position="0 0 0" width="2" height="2"></a-image>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </div>
+  <div id="earthlink">
+    <img src="https://dev-rayhan-byte.github.io/testme/earthlink.png" alt="EarthLink">
+  </div>
+  
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+  <script>
+    document.querySelector('a-marker').addEventListener('markerFound', function() {
+      document.getElementById('earthlink').style.display = 'block';
+    });
+  </script>
 </body>
 </html>
+
