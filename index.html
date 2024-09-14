@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Viewing Page</title>
-    <!-- A-Frame library for 3D and AR experiences -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <!-- AR.js for augmented reality functionality -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-    <!-- Basic CSS for styling -->
     <style>
         body {
             margin: 0;
@@ -37,9 +34,7 @@
 <body>
     <div id="info">Scanning for Hiro marker...</div>
     <a-scene embedded arjs='sourceType: webcam;' id="arScene">
-        <!-- Hiro marker detection -->
         <a-marker id="marker" preset="hiro">
-            <!-- AR content -->
             <a-image id="arImage" src="https://dev-rayhan-byte.github.io/testme/earthlink.png" 
                      width="2" height="2"
                      position="0 0 0"
@@ -47,29 +42,26 @@
                      scale="1 1 1">
             </a-image>
         </a-marker>
-
-        <!-- Camera setup -->
         <a-entity camera></a-entity>
     </a-scene>
 
-    <!-- JavaScript for interactivity and camera permissions -->
     <script>
+        // Function to request camera permissions and initialize AR scene
         function requestCameraPermissions() {
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
                     console.log('Camera access granted');
-                    // Initialize AR scene after permissions are granted
                     document.querySelector('#arScene').setAttribute('arjs', 'sourceType: webcam;');
                 })
                 .catch(error => {
-                    console.error('Camera access denied:', error);
-                    alert('Please allow camera access for AR functionality.');
+                    console.error('Camera access denied or error:', error);
+                    document.querySelector('#info').textContent = 'Camera access denied or error. Please check permissions.';
                 });
         }
 
         document.addEventListener('DOMContentLoaded', requestCameraPermissions);
 
-        // JavaScript for AR marker interactions
+        // AR marker interactions
         document.addEventListener('DOMContentLoaded', () => {
             const marker = document.querySelector('#marker');
             const arImage = document.querySelector('#arImage');
