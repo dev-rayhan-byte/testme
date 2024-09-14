@@ -1,36 +1,46 @@
-<!--https://dev-rayhan-byte.github.io/testme/-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Viewing Page</title>
-    <!-- A-Frame library for 3D scenes -->
+    <!-- A-Frame library for 3D and AR experiences -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <!-- AR.js library for augmented reality -->
+    <!-- AR.js for augmented reality functionality -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-    <!-- Basic CSS for full-screen AR experience -->
+    <!-- Basic CSS for styling -->
     <style>
         body {
             margin: 0;
             overflow: hidden;
             height: 100vh;
             width: 100vw;
+            background-color: #000;
         }
         a-scene {
             width: 100%;
             height: 100%;
         }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
-    <!-- A-Frame scene with AR.js integration -->
-    <a-scene embedded arjs>
-        <!-- Hiro marker preset -->
-        <a-marker preset="hiro">
-            <!-- Your AR content -->
-            <a-image src="https://dev-rayhan-byte.github.io/testme/earthlink.png" 
+    <div id="info">Scan the Hiro marker to see the content.</div>
+    <a-scene embedded arjs='sourceType: webcam;'>
+        <!-- Hiro marker detection -->
+        <a-marker id="marker" preset="hiro">
+            <!-- AR content -->
+            <a-image id="arImage" src="https://dev-rayhan-byte.github.io/testme/earthlink.png" 
                      width="2" height="2"
                      position="0 0 0"
                      rotation="0 0 0"
@@ -38,12 +48,31 @@
             </a-image>
         </a-marker>
 
-        <!-- Camera entity for AR view -->
+        <!-- Camera setup -->
         <a-entity camera></a-entity>
     </a-scene>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+        // Wait for A-Frame and AR.js to be loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get the marker and image elements
+            const marker = document.querySelector('#marker');
+            const arImage = document.querySelector('#arImage');
+            const info = document.querySelector('#info');
+
+            // Event listener for when the marker is detected
+            marker.addEventListener('markerFound', () => {
+                info.textContent = 'Hiro marker detected. AR content displayed.';
+                arImage.setAttribute('visible', 'true');
+            });
+
+            // Event listener for when the marker is lost
+            marker.addEventListener('markerLost', () => {
+                info.textContent = 'Scan the Hiro marker to see the content.';
+                arImage.setAttribute('visible', 'false');
+            });
+        });
+    </script>
 </body>
 </html>
-
-
-
-
