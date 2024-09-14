@@ -8,32 +8,34 @@
   <title>Simple AR Page</title>
   <style>
     body { margin: 0; }
-    #arjs-container { width: 100%; height: 100vh; }
     #earthlink { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
     #earthlink img { max-width: 100%; height: auto; }
   </style>
 </head>
 <body>
-  <div id="arjs-container">
-    <!-- AR.js scene -->
-    <a-scene embedded arjs>
-      <a-marker preset="hiro">
-        <a-image src="https://dev-rayhan-byte.github.io/testme/earthlink.png" position="0 0 0" width="2" height="2"></a-image>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
-  </div>
+  <a-scene embedded arjs>
+    <a-marker preset="hiro">
+      <a-image src="https://dev-rayhan-byte.github.io/testme/earthlink.png" position="0 0 0" width="2" height="2"></a-image>
+    </a-marker>
+    <a-entity camera></a-entity>
+  </a-scene>
+
   <div id="earthlink">
     <img src="https://dev-rayhan-byte.github.io/testme/earthlink.png" alt="EarthLink">
   </div>
-  
+
+  <!-- Include A-Frame and AR.js libraries -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.2/aframe/build/aframe-ar.js"></script>
   <script>
     document.querySelector('a-marker').addEventListener('markerFound', function() {
       document.getElementById('earthlink').style.display = 'block';
     });
+    document.querySelector('a-marker').addEventListener('markerLost', function() {
+      document.getElementById('earthlink').style.display = 'none';
+    });
   </script>
 </body>
 </html>
+
 
