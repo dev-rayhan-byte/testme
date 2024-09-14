@@ -1,0 +1,17 @@
+body {
+       margin: 0;
+       font-family: Arial, sans-serif;
+       text-align: center;
+       background-color: #f0f0f0;
+}
+
+h1 {
+       margin-top: 20px;
+       color: #333;
+}
+
+a-scene {
+       width: 100vw;
+       height: 80vh;
+       margin: 0 auto;
+}
