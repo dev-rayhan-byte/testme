@@ -5,7 +5,7 @@ AFRAME.registerComponent('globe', {
 
               // Create a video element
               const video = document.createElement('video');
-              video.src = 'mona.mp4'; // Use the correct path to your video file
+              video.src = 'https://dev-rayhan-byte.github.io/testme/mona.mp4'; // Use the correct path to your video file
               video.crossOrigin = "anonymous"; // Handle cross-origin if needed
               video.autoplay = true;
               video.loop = true;
