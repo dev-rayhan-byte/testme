@@ -6,22 +6,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Viewing Page</title>
+    <!-- A-Frame library for 3D scenes -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!-- AR.js library for augmented reality -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+    <!-- Basic CSS for full-screen AR experience -->
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        a-scene {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
+    <!-- A-Frame scene with AR.js integration -->
     <a-scene embedded arjs>
-        <!-- Define the marker for AR -->
+        <!-- Hiro marker preset -->
         <a-marker preset="hiro">
-            <!-- Add your image to the marker -->
-            <a-image src="https://dev-rayhan-byte.github.io/testme/earthlink.png" width="2" height="2"></a-image>
+            <!-- Your AR content -->
+            <a-image src="https://dev-rayhan-byte.github.io/testme/earthlink.png" 
+                     width="2" height="2"
+                     position="0 0 0"
+                     rotation="0 0 0"
+                     scale="1 1 1">
+            </a-image>
         </a-marker>
 
-        <!-- Add a camera with AR tracking -->
+        <!-- Camera entity for AR view -->
         <a-entity camera></a-entity>
     </a-scene>
 </body>
 </html>
+
 
 
 
