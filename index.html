@@ -32,15 +32,14 @@
     <div id="loading-text">Loading AR Experience...</div>
     <a-scene
       embedded
-      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: true;"
       renderer="precision: mediump; antialias: true;"
     >
       <!-- Using your custom MAIN.patt marker from GitHub -->
-      <a-marker type="pattern" url="https://dev-rayhan-byte.github.io/testme/pattern-marker.patt">
-        <!-- Display the Earth GIF as a flat entity from GitHub -->
-        <a-box position="0 0.5 0" material="color: blue"></a-box>
+  <a-marker preset="hiro">
+    <a-box position="0 0.5 0" material="color: blue"></a-box>
+  </a-marker>
 
-      </a-marker>
 
       <!-- Camera entity -->
       <a-entity camera></a-entity>
