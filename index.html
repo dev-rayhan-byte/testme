@@ -30,10 +30,14 @@
 
   <body>
     <div id="loading-text">Loading AR Experience...</div>
-    <a-scene embedded arjs>
-      <!-- Using your custom MAIN.patt marker -->
+    <a-scene
+      embedded
+      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+      renderer="precision: mediump; antialias: true;"
+    >
+      <!-- Using your custom MAIN.patt marker from GitHub -->
       <a-marker type="pattern" url="https://dev-rayhan-byte.github.io/testme/MAIN.patt">
-        <!-- Display the Earth GIF as a flat entity -->
+        <!-- Display the Earth GIF as a flat entity from GitHub -->
         <a-plane
           position="0 0 0"
           rotation="-90 0 0"
