@@ -36,15 +36,10 @@
       renderer="precision: mediump; antialias: true;"
     >
       <!-- Using your custom MAIN.patt marker from GitHub -->
-      <a-marker type="pattern" url="https://dev-rayhan-byte.github.io/testme/MAIN.patt">
+      <a-marker type="pattern" url="https://dev-rayhan-byte.github.io/testme/main.patt">
         <!-- Display the Earth GIF as a flat entity from GitHub -->
-        <a-plane
-          position="0 0 0"
-          rotation="-90 0 0"
-          width="1"
-          height="1"
-          material="src: https://dev-rayhan-byte.github.io/testme/EARTH.gif; transparent: true"
-        ></a-plane>
+        <a-box position="0 0.5 0" material="color: blue"></a-box>
+
       </a-marker>
 
       <!-- Camera entity -->
